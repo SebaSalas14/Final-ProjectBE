@@ -1,13 +1,16 @@
 //Importar dos funciones de moongoose
 const { Schema, model} = require ('mongoose');
+const mongoose = require('mongoose');
 
 const usersSchema = Schema({
     name: {
         type: String,
-        required : true
+        required : true, 
+        trim: true
     },
     createdAt :{
-        type: Date, default: Date.now
+        type: Date, 
+        default: Date.now()
     },
     password : {
         type: String,
@@ -16,12 +19,12 @@ const usersSchema = Schema({
     email : {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        trim:true
     },
     favs : {
       type: []
     }
-  
 })
 
-module.exports= mongoose.model('User', usersSchema);
+module.exports = mongoose.model('Users', usersSchema);
