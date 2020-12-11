@@ -22,6 +22,19 @@ exports.createUser = async (req, res)=> {
     //Hasheo Paswword
     user.password = await bcryptjs.hash(password, salt);
     await user.save();
+    //guardo usario y creo paylod para jwt
+    const payload = {
+        user: {
+            id : user._id       
+         }
+    }
+    jwt.sign(payload,process.env.SECRET,{
+        expiresIn: 604800
+    }, (error, token)=>{
+        if(error) throw error;
+        res.json({token})
+    })
+    
     }catch(error){
         console.log(error);
         res.status(400).json({msg: 'Hubo un error'})
