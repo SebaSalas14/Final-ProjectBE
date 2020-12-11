@@ -28,7 +28,7 @@ jwt.sign(payload, process.env.SECRET, {
     expiresIn: 3600
 },(error,token) => {
     if(error) throw error;
-    res.json({ token})
+    res.json({token})
 })
 
     } catch (error) {
