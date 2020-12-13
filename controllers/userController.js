@@ -26,7 +26,7 @@ exports.createUser = async (req, res)=> {
     const payload = {
         user: {
             id : user._id       
-         }
+        }
     }
     jwt.sign(payload,process.env.SECRET,{
         expiresIn: 604800
@@ -39,4 +39,4 @@ exports.createUser = async (req, res)=> {
         console.log(error);
         res.status(400).json({msg: 'Hubo un error'})
     }
-     }
+    }
