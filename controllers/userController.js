@@ -39,6 +39,17 @@ exports.createUser = async (req, res) => {
         console.log(error);
         res.status(400).json({ msg: 'Hubo un error' })
     }
+    user = new Users(req.body);
+    //Genero Salt 
+    const salt = await bcryptjs.genSalt(10);
+    //Hasheo Paswword
+    user.password = await bcryptjs.hash(password, salt);
+    await user.save();
+    //guardo usario y creo paylod para jwt
+    const payload = {
+        user: {
+            id : user._id       
+        }
 }
 exports.recoverPass = async (req, res) => {
     const errors = validationResult(req);
@@ -68,4 +79,5 @@ exports.recoverPass = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: ' Hubo un error' })
     }
+}
 }

@@ -2,6 +2,7 @@ const express = require('express');
 const cors= require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/users');
+const coursesRoutes = require('./routes/courses');
 const authRoutes = require('./routes/auth');
 const commentsRoutes = require('./routes/comments');
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json({extended: true}))
 
 app.use('/api/users', userRoutes);
+app.use('/api/courses', coursesRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/comments', commentsRoutes);
 
