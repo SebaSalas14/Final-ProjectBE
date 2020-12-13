@@ -25,12 +25,11 @@ const payload = {
     }
 }
 jwt.sign(payload, process.env.SECRET, {
-    expiresIn: 3600
+    expiresIn: 604800
 },(error,token) => {
     if(error) throw error;
     res.json({token})
 })
-
     } catch (error) {
  console.log(error)
  res.status(400).json({msg: 'Ocurrio un error '})
