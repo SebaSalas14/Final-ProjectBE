@@ -24,6 +24,10 @@ const usersSchema = Schema({
     },
     favs : {
       type: []
+    },
+    subscription : {
+        type: String,
+        trim: true
     }
 })
 

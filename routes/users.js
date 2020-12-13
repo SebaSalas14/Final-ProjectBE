@@ -12,5 +12,10 @@ router.post('/', [
 ],
     userController.createUser)
 
+router.post('/', [
+    check('email', 'El email no es valido').isEmail(),
+    check('password', 'La longitud minima es de 8 caracteres').isLength({min:8})
+], userController.recoverPass)
+
 module.exports = router;
 
