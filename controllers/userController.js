@@ -51,6 +51,7 @@ exports.createUser = async (req, res) => {
             id : user._id       
         }
 }
+}
 exports.recoverPass = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -64,9 +65,7 @@ exports.recoverPass = async (req, res) => {
         }
         const payload = {
             user: {
-                id: user._id,
-                favs: user.favs,
-                subscription: user.subscription
+                id: user._id
             }
         }
         //para recuperar usuario
@@ -80,4 +79,4 @@ exports.recoverPass = async (req, res) => {
         res.status(500).json({ msg: ' Hubo un error' })
     }
 }
-}
+

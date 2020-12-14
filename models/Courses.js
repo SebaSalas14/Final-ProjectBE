@@ -7,7 +7,7 @@ const coursesSchema = Schema({
         required : true, 
         trim: true
     },
-    createdAt :{
+    lastModification :{
         type: Date, 
         default: Date.now()
     },
