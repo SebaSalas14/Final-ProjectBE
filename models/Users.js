@@ -27,7 +27,8 @@ const usersSchema = Schema({
     },
     subscription : {
         type: String,
-        trim: true
+        trim: true,
+        enum:["Free","Gold","Diamond"]
     }
 })
 

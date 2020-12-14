@@ -32,8 +32,12 @@ exports.editCourse = async (req,res) =>{
         return res.status(400).json({errors:errors.array});
     }
     try{
+        const {subscription} = req.body
+        if( subscription === "Gold" || subscription === "Free" || subscription === "Diamond"  ) {
         const course = await Courses.findByIdAndUpdate(req.params.id, req.body,{new:true})  
-        res.json(course)
+        res.json(course) 
+        }
+        return res.status(404).json({msg: "Las Suscripciones solo pueden ser Free, Gold o Diamond"})
     }
     catch(error)
         {
