@@ -6,8 +6,9 @@ const { check } = require('express-validator');
 
 
 router.get('/', [], courseController.getCourses)
-router.get('/id/:id', [], courseController.getCourseById )
-router.get('/featured', [], courseController.getFeaturedCourses )
+router.get('/id/:id', [], courseController.getCourseById)
+router.get('/featured', [], courseController.getFeaturedCourses)
+router.get('/subscription', [], courseController.getCoursesBySubscription)
 router.put('/:id', [], courseController.editCourse)
 router.post('/', [], courseController.createCourse)
 router.delete('/', [], courseController.deleteCourse)

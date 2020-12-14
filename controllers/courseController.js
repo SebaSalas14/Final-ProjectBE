@@ -101,8 +101,30 @@ exports.getFeaturedCourses = async (req,res) => {
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).json({msg:"Hubo un error con la petición"})
+            res.status(400).json({msg:"Hubo un error con la petición"})
         });
+}
+
+exports.getCoursesBySubscription = async (req,res) =>{
+    const errors=validationResult(req);
+    if(!errors.isEmpty())
+    {
+        return res.status(400).json({errors:errors.array})
+    }
+    const query = {subscription:req.query.subscription}
+    Courses.find(query)
+    .then((courses)=>{
+        if(!courses)
+        {
+            return res.status(404).json({msg:"Cursos no encontrados"})
+        }
+        res.status(200).send(courses);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(400).json({msg:"Hubo un error en la peticion"})
+    })
+    
 }
 
 
