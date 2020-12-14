@@ -3,6 +3,7 @@ const Users = require('../models/Users');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
+const nodemailer= require("nodemailer");
 
 exports.createUser = async (req, res) => {
     const errors = validationResult(req);
@@ -51,11 +52,11 @@ exports.createUser = async (req, res) => {
             id : user._id       
         }
 }
-}
+ }
 exports.recoverPass = async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array })
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array})
     }
     try {
         const { email } = req.body;
@@ -71,12 +72,68 @@ exports.recoverPass = async (req, res) => {
         //para recuperar usuario
         jwt.sign(payload, process.env.SECRET, {
             expiresIn: 3600
-        }, (error, token) => {
+        }, (error, tokenPass) => {
             if (error) throw error;
-            res.json({ token })
+            res.json({ tokenPass })
         })
     } catch (error) {
         res.status(500).json({ msg: ' Hubo un error' })
     }
+  res.end();
+
+
+async function main() {
+    const {tokenPass} = req.body
+    let testAccount = await nodemailer.createTestAccount();
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port:  587, //puerto unico
+      secure: false, 
+      auth: {
+        user: 'knowledgeacademyrc@gmail.com', 
+        pass: 'academyRC', 
+      }
+
+    });
+  
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: '"KnowledgeAcademy " <knowledgeacademyrc@gmail.com>', // sender address
+      to: "sebacarp71@gmail.com", 
+      subject: "Recuperar Contraseña ✔", // Subject line
+      html: `<b> <p> Para recuperar su contreña. Haga click en el siguiente Link: </p> </b>
+      <a href="http://localhost:3000/recoverpassword/${tokenPass}"> Recuperar contraseña </a> 
+      <br>
+      Atte: Knoweldge Academy`, // html body
+    });
+  
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    
+  }
+  
+  main().catch(console.error);
+
 }
+
+exports.getFavs = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array })
+    }
+    Users.findById(req.params.id)
+    .then((user) => {
+        if(!user){
+            res.status(404).json({msg: 'Usario no encontrado'})
+        }
+        res.status(200).send(user.favs)
+    }) .catch ((error) => {
+        res.status(400).json({msg:'Error en la petición'})
+        console.log(error);
+    })
+
+}
+
+
+
 
