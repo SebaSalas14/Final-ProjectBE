@@ -33,7 +33,7 @@ exports.createUser = async (req, res) => {
             expiresIn: 604800
         }, (error, token) => {
             if (error) throw error;
-            return res.json({ token })
+            return res.json({ token,user})
         })
 
     } catch (error) {
@@ -121,7 +121,7 @@ exports.getFavs = async (req, res) => {
         })
 }
 
-exports.editSubscriptions = async (req, res) => {
+exports.editUsers = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array });
