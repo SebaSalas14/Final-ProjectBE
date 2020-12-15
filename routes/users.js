@@ -21,7 +21,7 @@ router.post('/recoverPassword', [
 router.get('/:id/favs', [],
     userController.getFavs )
 
-router.put('/:id',[],userController.editSubscriptions)
+router.put('/:id',[],userController.editUsers)
 
 
 module.exports = router;

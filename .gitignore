@@ -27,3 +27,4 @@ yarn-error.log*
 .env
 .env.test
 .env*.local
+variables.env

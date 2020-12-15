@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         const encrypt = jwt.verify(token, process.env.SECRET);
         req.user = encrypt.user;
         next();
-    } catch (error) {
+    } catch(error) {
         console.log(error);
         res.status(401).json({ msg: 'Hubo un error' })
     }
