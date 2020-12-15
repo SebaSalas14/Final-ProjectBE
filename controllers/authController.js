@@ -38,7 +38,7 @@ jwt.sign(payload, process.env.SECRET, {
 
 exports.getAuthUser = async (req,res) => {
     try {
-        const user = await (await Users.findById(req.user.id)).select('-password')
+        const user = await Users.findById(req.user.id).select('-password')
         res.json({ user})
     } catch(error){
         console.log(error);

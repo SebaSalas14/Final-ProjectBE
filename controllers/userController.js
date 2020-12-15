@@ -33,24 +33,12 @@ exports.createUser = async (req, res) => {
             expiresIn: 604800
         }, (error, token) => {
             if (error) throw error;
-            res.json({ token })
+            return res.json({ token })
         })
 
     } catch (error) {
         console.log(error);
         res.status(400).json({ msg: 'Hubo un error' })
-    }
-    user = new Users(req.body);
-    //Genero Salt 
-    const salt = await bcryptjs.genSalt(10);
-    //Hasheo Paswword
-    user.password = await bcryptjs.hash(password, salt);
-    await user.save();
-    //guardo usario y creo paylod para jwt
-    const payload = {
-        user: {
-            id: user._id
-        }
     }
 }
 exports.recoverPass = async (req, res) => {
@@ -139,11 +127,11 @@ exports.editSubscriptions = async (req, res) => {
         return res.status(400).json({ errors: errors.array });
     }
     try {
-        const {subscription} = req.body
+        const newUser = await Users.findById(req.params.id);
+        newUser.subscription=req.body.subscription
         if( subscription === "Gold" || subscription === "Free" || subscription === "Diamond"  ) {
-        const editSubscriptions = await Users.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        res.json(editSubscriptions)
-         return res.status(200)
+        const editSubscriptions = await Users.findByIdAndUpdate(req.params.id, newUser, { new: true })
+        return res.status(200).json(editSubscriptions)
         } 
  return res.status(404).json({msg: "Las Suscripciones solo pueden ser Free, Gold o Diamond"})
         
