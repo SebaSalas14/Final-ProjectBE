@@ -128,14 +128,16 @@ exports.editUsers = async (req, res) => {
         return res.status(400).json({ errors: errors.array });
     }
     try {
-        const {subscription} = req.body
+        const {subscription} = req.body;
         if( subscription === "Gold" || subscription === "Free" || subscription === "Diamond"  ) {
-        const editSubscriptions = await Users.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        const newUser = await Users.findById({ _id: req.params.id });
+        newUser.subscription = subscription;
+        const editSubscriptions = await Users.findByIdAndUpdate(req.params.id, newUser, { new: true })
         res.json(editSubscriptions)
          return res.status(200)
-        } 
- return res.status(404).json({msg: "Las Suscripciones solo pueden ser Free, Gold o Diamond"})
-        
+        } else {
+            return res.status(404).json({msg: "Las Suscripciones solo pueden ser Free, Gold o Diamond"})
+        }
     }
     catch (error) {
         console.log(error);
