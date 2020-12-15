@@ -134,8 +134,8 @@ exports.deleteCourse = async (req,res) =>{
     {
         return res.status(400).json({errors:errors.array});
     }
-    const {_id}=req.body;
-    Courses.findByIdAndDelete({_id})
+    const {id} = req.params;
+    Courses.findOneAndRemove({_id:id})
     .then(()=>res.json({msg:"curso borrado"}))
     .catch((error)=> {
         console.log(error)

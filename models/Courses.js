@@ -42,10 +42,11 @@ const coursesSchema = Schema({
     {
         type:[],
         required:true,
-    }
-    // image:{
-
-    // },
+    },
+ image:{
+     type: String,
+     require:true,
+     },
 
 })
 

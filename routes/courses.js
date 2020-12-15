@@ -11,6 +11,6 @@ router.get('/featured', [], courseController.getFeaturedCourses)
 router.get('/subscription', [], courseController.getCoursesBySubscription)
 router.put('/:id', [], courseController.editCourse)
 router.post('/', [], courseController.createCourse)
-router.delete('/', [], courseController.deleteCourse)
+router.delete('/:id', [], courseController.deleteCourse)
 
 module.exports = router;

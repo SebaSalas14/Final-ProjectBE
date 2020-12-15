@@ -38,8 +38,8 @@ jwt.sign(payload, process.env.SECRET, {
 
 exports.getAuthUser = async (req,res) => {
     try {
-        const user = await (await Users.findById(req.user.id)).select('-password')
-        res.json({ user})
+        const user =  await Users.findById(req.user.id).select('-password')
+        res.json({user})
     } catch(error){
         console.log(error);
         res.status(500).json({msg:'Error de servidor '})
