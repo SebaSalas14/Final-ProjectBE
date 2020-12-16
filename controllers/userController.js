@@ -127,9 +127,11 @@ exports.editUsers = async (req, res) => {
         return res.status(400).json({ errors: errors.array });
     }
     try {
-        const newUser = await Users.findById(req.params.id);
+        let newUser = await Users.findById(req.params.id);
+        console.log(newUser);
+        console.log(req.body);
         newUser.subscription=req.body.subscription
-        if( subscription === "Gold" || subscription === "Free" || subscription === "Diamond"  ) {
+        if( newUser.subscription === "Gold" || newUser.subscription === "Free" || newUser.subscription === "Diamond"  ) {
         const editSubscriptions = await Users.findByIdAndUpdate(req.params.id, newUser, { new: true })
         return res.status(200).json(editSubscriptions)
         } 
