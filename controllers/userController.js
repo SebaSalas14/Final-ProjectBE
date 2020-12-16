@@ -1,4 +1,5 @@
 //importamos el modelo
+const  Courses = require( '../models/Courses');
 const Users = require('../models/Users');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
@@ -153,10 +154,10 @@ exports.addFavs = async (req,res) =>{
     try {
         const {favs} = req.body;
         const newUser = await Users.findById({ _id: req.params.id });
-        newUser.favs = favs;
+        const course = await Courses.findById({_id: favs});
+        newUser.favs = [...newUser.favs, course]
         const editFavs = await Users.findByIdAndUpdate(req.params.id, newUser, { new: true })
-        res.json(editFavs)
-         return res.status(200)
+         return res.status(200).json(editFavs)
     }
     catch (error) {
         console.log(error);
