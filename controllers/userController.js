@@ -146,6 +146,26 @@ exports.editUsers = async (req, res) => {
     res.end()
 }
 
+exports.addFavs = async (req,res) =>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array });
+    }
+    try {
+        const {favs} = req.body;
+        const newUser = await Users.findById({ _id: req.params.id });
+        newUser.favs = favs;
+        const editFavs = await Users.findByIdAndUpdate(req.params.id, newUser, { new: true })
+        res.json(editFavs)
+         return res.status(200)
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).json({ msg: "Error en la petición" })
+    }
+    res.end()
+}
+
 
 
 

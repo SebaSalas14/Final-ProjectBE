@@ -20,8 +20,8 @@ router.post('/recoverPassword', [
 
 router.get('/:id/favs', [],
     userController.getFavs )
-
-router.put('/:id',[],userController.editUsers)
+router.put('/:id/favs' ,[], userController.addFavs)
+router.put('/:id',[],userController.editUsers) 
 
 
 module.exports = router;
