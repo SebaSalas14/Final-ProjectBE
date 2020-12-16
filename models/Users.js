@@ -30,6 +30,11 @@ const usersSchema = Schema({
         trim: true,
         enum:["Free","Gold","Diamond"],
         default:"Free"
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 })
 
