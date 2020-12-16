@@ -23,12 +23,18 @@ const usersSchema = Schema({
         trim:true
     },
     favs : {
-      type: []
+        type: []
     },
     subscription : {
         type: String,
         trim: true,
-        enum:["Free","Gold","Diamond"]
+        enum:["Free","Gold","Diamond"],
+        default:"Free"
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 })
 
