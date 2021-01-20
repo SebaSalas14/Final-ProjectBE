@@ -124,7 +124,6 @@ exports.getCoursesBySubscription = async (req,res) =>{
         console.log(error);
         res.status(400).json({msg:"Hubo un error en la peticion"})
     })
-    
 }
 
 
@@ -141,4 +140,22 @@ exports.deleteCourse = async (req,res) =>{
         console.log(error)
         res.status(400).json({msg:"Error en la peticion"})
     })
+}
+
+exports.getSearch = async (req, res) =>{
+    const errors = validationResult(req)
+    if(!errors.isEmpty())
+    {
+        return res.status(400).json({errors:errors.array});
+    }
+    const {search} = req.params
+    const query = search.toLowerCase().replace(/_/g,' ')
+    try {
+        const courses = await Courses.find()
+        const results = courses.filter(course => course.name.toLowerCase().includes(query))
+        res.status(200).json(results)
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({msg:'Hubo un error en la peticion'})
+    }
 }
