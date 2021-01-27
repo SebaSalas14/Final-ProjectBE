@@ -60,19 +60,18 @@ exports.recoverPass = async (req, res) => {
         }
         //para recuperar usuario
         jwt.sign(payload, process.env.SECRET, {
-            expiresIn: 3600
+            expiresIn: 900
         }, (error, tokenPass) => {
             if (error) throw error;
-            res.json({ tokenPass })
+            main(tokenPass, user);
+            res.status(200).json({ tokenPass })
         })
     } catch (error) {
         res.status(500).json({ msg: ' Hubo un error' })
     }
-    res.end();
 
 
-    async function main() {
-        const { tokenPass } = req.body
+    async function main(tokenPass, user) {
         let testAccount = await nodemailer.createTestAccount();
         let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -88,12 +87,13 @@ exports.recoverPass = async (req, res) => {
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"KnowledgeAcademy " <knowledgeacademyrc@gmail.com>', // sender address
-            to: "sebacarp71@gmail.com",
+            to: `${user.email}`,
             subject: "Recuperar Contraseña ✔", // Subject line
-            html: `<b> <p> Para recuperar su contreña. Haga click en el siguiente Link: </p> </b>
-      <a href="http://localhost:3000/recoverpassword/${tokenPass}"> Recuperar contraseña </a> 
-      <br>
-      Atte: Knoweldge Academy`, // html body
+            html: `<p> Hola ${user.name}. Para recuperar su contraseña, haga click en el siguiente link: </p>
+            <a href="http://localhost:3000/changepassword/${tokenPass}"> Recuperar contraseña </a> 
+            <br>
+            <p>El link tiene una duración de 15 minutos</p>
+            <p><b>Atte: Knowledge Academy</b></p>` // html body
         });
 
         console.log("Message sent: %s", info.messageId);
@@ -101,7 +101,6 @@ exports.recoverPass = async (req, res) => {
 
     }
 
-    main().catch(console.error);
 
 }
 
@@ -166,6 +165,19 @@ exports.addFavs = async (req,res) =>{
     res.end()
 }
 
-
-
-
+exports.changePassword = async (req, res) =>{
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array });
+    }
+    try {
+        let user = await Users.findById({_id:req.params.id})
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(req.body.password, salt);
+        const userUpdated= await Users.findByIdAndUpdate({_id: user._id}, user,{new:true})
+        res.status(200).json({msg:'La contraseña ha sido actualizada'})
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ msg: "Error en la petición" })
+    }
+}
